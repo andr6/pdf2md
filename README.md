@@ -49,7 +49,7 @@ Convert PDF files to Markdown instantly, securely, and 100% in your browser. No 
 - **Yes!** Everything happens in your browser. No data is uploaded or stored anywhere.
 
 ### Is there a file size limit?
-- For best performance, keep files under 10MB. Larger files may slow down your browser.
+- For best performance, keep files under 75MB. Larger files may slow down your browser.
 
 ### Can I use this tool offline?
 - Yes! Once loaded, the app works without an internet connection.
@@ -97,6 +97,12 @@ Convert PDF files to Markdown instantly, securely, and 100% in your browser. No 
    yarn dev
    ```
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Command-line conversion
+Convert a PDF directly without the browser:
+```bash
+pnpm convert <input.pdf> <output.md>
+```
 
 ---
 
