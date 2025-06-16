@@ -69,7 +69,7 @@ export function FaqSection() {
             <AccordionTrigger>Is there a file size limit?</AccordionTrigger>
             <AccordionContent>
               <p>
-                Yes, the recommended maximum file size is 10MB. Larger files may cause performance issues or browser
+                Yes, the recommended maximum file size is 75MB. Larger files may cause performance issues or browser
                 slowdowns. Since all processing happens in your browser, very large files might cause your browser to
                 become unresponsive.
               </p>

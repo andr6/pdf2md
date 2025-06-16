@@ -88,9 +88,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
   }
 
   const handleFile = (file: File) => {
-    if (file.size > 10 * 1024 * 1024) {
-      // 10MB limit
-      setError("File size exceeds 10MB limit")
+    if (file.size > 75 * 1024 * 1024) {
+      // 75MB limit
+      setError("File size exceeds 75MB limit")
       return
     }
 
