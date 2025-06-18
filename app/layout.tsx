@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import { Toaster } from '@/components/ui/sonner'
+import ErrorBoundary from '@/components/error-boundary'
 
 export const metadata: Metadata = {
   title: 'PDF to Markdown Converter – Free Unlimited, Secure, 100% Browser-Based',
@@ -81,7 +83,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
+        <Toaster richColors />
         <Analytics />
       </body>
     </html>
