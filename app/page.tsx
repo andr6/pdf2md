@@ -9,6 +9,7 @@ import { FileText, Code, ArrowRight} from "lucide-react"
 import { FaqSection } from "@/components/faq-section"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { GitHubStarButton } from "@/components/github-star-button"
+import { toast } from "sonner"
 
 export default function Home() {
   const [markdown, setMarkdown] = useState<string | null>(null)
@@ -87,7 +88,7 @@ export default function Home() {
                   <Button
                     onClick={() => {
                       navigator.clipboard.writeText(markdown || "")
-                      alert("Markdown copied to clipboard!")
+                      toast.success("Markdown copied to clipboard!")
                     }}
                     className="h-9 font-medium bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
                   >

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 interface PDF2MDLoaderProps {
   file: File | null
@@ -23,6 +24,7 @@ export default function PDF2MDLoader({ file, isConverting, onLoad, onConversionC
         onLoad()
       } catch (error) {
         console.error("Failed to load pdf2md library:", error)
+        toast.error("Failed to load conversion library. Please try again later.")
         onError("Failed to load conversion library. Please try again later.")
       }
     }
@@ -44,8 +46,10 @@ export default function PDF2MDLoader({ file, isConverting, onLoad, onConversionC
 
         // Return the result
         onConversionComplete(markdown)
+        toast.success("Conversion complete!")
       } catch (error) {
         console.error("Error converting PDF:", error)
+        toast.error("Failed to convert PDF. The file might be corrupted or unsupported.")
         onError("Failed to convert PDF. The file might be corrupted or unsupported.")
       }
     }

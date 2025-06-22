@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Upload, File, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
+import { toast } from "sonner"
 
 // Import the PDF2MD library dynamically to avoid SSR issues
 import dynamic from "next/dynamic"
@@ -68,7 +69,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
       if (file.type === "application/pdf") {
         handleFile(file)
       } else {
-        setError("Please upload a PDF file")
+        const msg = "Please upload a PDF file"
+        setError(msg)
+        toast.error(msg)
       }
     }
   }
@@ -82,7 +85,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
       if (file.type === "application/pdf") {
         handleFile(file)
       } else {
-        setError("Please upload a PDF file")
+        const msg = "Please upload a PDF file"
+        setError(msg)
+        toast.error(msg)
       }
     }
   }
@@ -90,7 +95,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
   const handleFile = (file: File) => {
     if (file.size > 75 * 1024 * 1024) {
       // 75MB limit
-      setError("File size exceeds 75MB limit")
+      const msg = "File size exceeds 75MB limit"
+      setError(msg)
+      toast.error(msg)
       return
     }
 
@@ -108,7 +115,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
       // This is just a placeholder for the button click handler
     } catch (error) {
       console.error("Error converting PDF:", error)
-      setError("Failed to convert PDF. Please try a different file.")
+      const msg = "Failed to convert PDF. Please try a different file."
+      setError(msg)
+      toast.error(msg)
       setIsConverting(false)
     }
   }
@@ -125,10 +134,12 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
             setProgress(100)
             onConversionComplete(markdown, selectedFile)
             setIsConverting(false)
+            toast.success("Conversion complete!")
           }
         }}
         onError={(errorMsg) => {
           setError(errorMsg)
+          toast.error(errorMsg)
           setIsConverting(false)
         }}
       />
