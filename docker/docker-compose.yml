@@ -1,0 +1,96 @@
+
+services:
+  # Main application service
+  pdf2md-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: pdf2md-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - pdf2md-network
+
+  # Development service (alternative to production)
+  pdf2md-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: pdf2md-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    profiles:
+      - dev
+    networks:
+      - pdf2md-network
+
+  # Nginx reverse proxy (optional for production)
+  nginx:
+    image: nginx:alpine
+    container_name: pdf2md-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - pdf2md-app
+    restart: unless-stopped
+    profiles:
+      - production
+    networks:
+      - pdf2md-network
+
+  # Health monitoring service (optional)
+  healthcheck:
+    image: curlimages/curl:latest
+    container_name: pdf2md-healthcheck
+    command: >
+      sh -c "
+        while true; do
+          if curl -f http://pdf2md-app:3000/api/health; then
+            echo 'Health check passed at $(date)'
+          else
+            echo 'Health check failed at $(date)'
+          fi
+          sleep 60
+        done
+      "
+    depends_on:
+      - pdf2md-app
+    restart: unless-stopped
+    profiles:
+      - monitoring
+    networks:
+      - pdf2md-network
+
+networks:
+  pdf2md-network:
+    driver: bridge
+    name: pdf2md-network
+
+volumes:
+  # Volume for storing any temporary files or logs if needed
+  pdf2md-data:
+    driver: local
